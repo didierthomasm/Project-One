@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 // Sample images for the carousel
 const carouselImages = [
     "image1.jpg",
@@ -45,11 +46,33 @@ function initializeDatePicker() {
     // This will display a native date picker on supporting browsers
     datepicker.type = "date";
 }
+=======
+document.addEventListener("DOMContentLoaded", function () {
+    const carousel = document.querySelector(".carousel");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const slideshowImage = document.getElementById("slideshow-image");
+    const datepicker = document.getElementById("datepicker");
 
-// Call the functions to create the carousel and initialize the date picker
-createCarousel();
-initializeDatePicker();
+    function showCarousel() {
+        carousel.style.display = "flex";
+    }
 
+    function hideCarousel() {
+        carousel.style.display = "none";
+    }
+
+    function loadSlideshowImage(imageSrc) {
+        slideshowImage.src = imageSrc;
+        showCarousel(); 
+    }
+>>>>>>> Stashed changes
+
+    function createCarousel() {
+        // ... your carousel creation code ...
+    }
+
+<<<<<<< Updated upstream
 
 //CALLING APIS OF APOD AND NEOW
 function fetchData() {
@@ -82,3 +105,79 @@ function fetchData() {
       });
   }
     fetchData2();
+=======
+    function initializeDatePicker() {
+        const today = new Date();
+        const defaultDate = today.toISOString().split('T')[0];
+        datepicker.value = defaultDate;
+
+        datepicker.addEventListener("change", () => {
+            fetchData();
+        });
+
+        // For simplicity, let's use the built-in HTML5 date input
+        // This will display a native date picker on supporting browsers
+        datepicker.type = "date";
+    }
+
+    // Function to fetch data from APIs and update the carousel
+    function fetchData() {
+        var key = 'DhZgqHPR8sd2nvKgECz74jcTRRxDcioHOCvgtd7z';
+        var selectedDate = datepicker.value;
+
+        var getNeow = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${selectedDate}&end_date=${selectedDate}&api_key=${key}`;
+        var getApod = `https://api.nasa.gov/planetary/apod?api_key=${key}&date=${selectedDate}`;
+
+        const carouselDiv = document.querySelector(".carousel");
+
+        fetch(getNeow)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                console.log("NEOW Data:", data);
+            })
+            .catch(function (error) {
+                console.log("Error fetching NEOW data:", error);
+            });
+
+        fetch(getApod)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                console.log("APOD Data:", data);
+                var imgURL = data.url;
+                var explan = data.explanation;
+                const img = document.createElement("img");
+                img.src = imgURL;
+                const explanationP = document.createElement("p");
+                explanationP.textContent = explan;
+
+                carouselDiv.innerHTML = ''; // Clear any existing content in the carousel
+                carouselDiv.appendChild(img); // Append the image to the carousel
+                carouselDiv.appendChild(explanationP); // Append the explanation paragraph to the carousel
+                loadSlideshowImage(imgURL); // Load the image into the carousel
+            })
+            .catch(function (error) {
+                console.log("Error fetching APOD data:", error);
+                hideCarousel(); // Hide the carousel buttons and the image in case of an error.
+            });
+    }
+
+    // Call the functions to create the carousel and initialize the date picker
+    createCarousel();
+    initializeDatePicker();
+
+    // Event listeners for carousel buttons
+    prevBtn.addEventListener("click", () => {
+        // Implement the logic to show the previous image in the carousel.
+        // This code is left empty for you to fill in.
+    });
+
+    nextBtn.addEventListener("click", () => {
+        // Implement the logic to show the next image in the carousel.
+        // This code is left empty for you to fill in.
+    });
+});
+>>>>>>> Stashed changes
