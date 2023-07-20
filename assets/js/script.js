@@ -63,7 +63,7 @@ function fetchData() {
       })
       .then(function (data) {
         console.log(data);
-      });
+      })
   }
     fetchData();
   
