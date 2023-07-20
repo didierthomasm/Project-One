@@ -21,7 +21,7 @@ createCarousel();
 initializeDatePicker();
 
 // Sample images for the carousel
-const carouselImages= src="data.url";
+var carouselImages= src="data.url";
 
 // Function to create the carousel with images
 function createCarousel() {
@@ -37,7 +37,7 @@ function fetchData() {
   var getNeow = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${selectedDate}&end_date=${selectedDate}&api_key=${key}`;
   var getApod = `https://api.nasa.gov/planetary/apod?api_key=${key}&date=${selectedDate}`;
 
-  const carouselDiv = document.querySelector(".carousel");
+  var carouselDiv = document.querySelector(".carousel");
 
   fetch(getNeow)
       .then(function (response) {
@@ -57,13 +57,23 @@ function fetchData() {
       .then(function (data) {
           console.log("APOD Data:", data);
           var imgURL = data.url;
-          const img = document.createElement("img");
+          var imgTitle = document.createElement("h3");
+          var imgExplanation = document.createElement("h4");
+          var img = document.createElement("img");
           img.src = imgURL;
           console.log(img);
           carouselDiv.innerHTML = ''; // Clear any existing images in the carousel
+          imgTitle.innerText = data.title;
+          imgExplanation.innerText = data.explanation;
+          imgTitle.className = 'title';
+          imgExplanation.className = 'explanation';
           carouselDiv.appendChild(img);
+          carouselDiv.appendChild(imgTitle);
+          carouselDiv.appendChild(imgExplanation);
+          
       })
       .catch(function (error) {
           console.log("Error fetching APOD data:", error);
       });
-}
+          
+    };

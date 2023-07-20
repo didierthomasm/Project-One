@@ -25,12 +25,6 @@ nav a {
     color: #fff;
 }
 
-.carousel {
-    width: 100%;
-    max-width: 800px;
-    margin: 20px auto;
-}
-
 .carousel img {
     width: 100%;
     height: auto;
@@ -42,6 +36,28 @@ nav a {
     margin: 20px auto;
 }
 
+.carousel {
+    display: flex;
+    
+    width: auto;
+    height: auto;
+    max-width: 800px;
+    max-height: 800px;
+    margin: 20px auto;
+  
+}
+
+.title {
+    background: #000;
+    width: fit-content;
+    margin: 10px auto;
+}
+
+.explanation {
+    background-color: #000;
+    width: fit-content;
+    margin: 10px auto;
+}
 #datepicker {
     width: 100%;
     padding: 10px;
