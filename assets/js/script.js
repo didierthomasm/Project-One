@@ -49,3 +49,36 @@ function initializeDatePicker() {
 // Call the functions to create the carousel and initialize the date picker
 createCarousel();
 initializeDatePicker();
+
+
+//CALLING APIS OF APOD AND NEOW
+function fetchData() {
+
+    var key = 'DhZgqHPR8sd2nvKgECz74jcTRRxDcioHOCvgtd7z';
+    var getNeow = `https://api.nasa.gov/neo/rest/v1/feed?start_date=2017-08-11&end_date=2017-08-11&api_key=${key}`;
+    
+    fetch(getNeow)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        console.log(data);
+      });
+  }
+    fetchData();
+  
+  
+  function fetchData2() {
+  
+      var api_key = 'DhZgqHPR8sd2nvKgECz74jcTRRxDcioHOCvgtd7z';
+      var getApod = `https://api.nasa.gov/planetary/apod?api_key=${api_key}&start_date=2017-07-01&end_date=2017-07-11`;
+      
+      fetch(getApod)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        console.log(data);
+      });
+  }
+    fetchData2();
