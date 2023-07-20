@@ -25,56 +25,19 @@ nav a {
     color: #fff;
 }
 
-.carousel-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #ccc;
+.carousel {
+    width: 100%;
+    max-width: 800px;
     margin: 20px auto;
-    z-index: 0; /* Set the z-index to place the carousel below the navigation bar */
 }
 
-<<<<<<< Updated upstream
 .carousel img {
     width: 100%;
     height: auto;
     display: none;
-=======
-.carousel-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center; /* Center the buttons horizontally */
-}
-
-.carousel-content img {
-    width: 60%;
-    height: auto; /* Set the height to auto to maintain the image's aspect ratio */
-    margin-bottom: 10px; /* Add a margin to separate the image and buttons */
-}
-
-.carousel-content button {
-    display: none; /* Hide the buttons initially */
-    margin: 10px;
-}
-
-.carousel-content button:first-child {
-    margin-right: 5px;
-}
-
-.carousel-content button:last-child {
-    margin-left: 5px;
-}
-
-.carousel-buttons.show {
-    display: flex; /* Show the buttons when 'show' class is added */
->>>>>>> Stashed changes
 }
 
 .calendar {
-    display: flex;
-    justify-content: center;
     width: 200px;
     margin: 20px auto;
 }
