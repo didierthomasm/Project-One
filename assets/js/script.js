@@ -68,9 +68,10 @@ function fetchData(date) {
         });
 }
 
+
+// Creates an element for the carrusel
 function carruselElement(dataApod) {
     const carouselElement = document.getElementById("carousel");
-    
     const carruselDiv = document.createElement('div');
     carruselDiv.classList.add('carruselDiv');
     carruselDiv.innerHTML = `
@@ -82,8 +83,19 @@ function carruselElement(dataApod) {
     carouselElement.appendChild(carruselDiv);
 }
 
+// Creates an element for the facts
 function factOfTheDay(dataNeow) {
-    
+    let date = Object.keys(dataNeow.near_earth_objects)[0]; // date
+    let numberElements = dataNeow.element_count; // near earth objects
+    const factElement = document.getElementById('fact');
+    const factDiv = document.createElement('div');
+    factDiv.classList.add('factDiv');
+    factDiv.innerHTML = `
+        <h2>Fact</h2>
+        <p>On this day, ${date}, ${numberElements} near earth objects where detected.</p>
+    `
+    factElement.textContent = '';
+    factElement.appendChild(factDiv);
 }
 
 // Call the function to initialize the date picker
