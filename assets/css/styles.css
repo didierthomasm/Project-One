@@ -4,31 +4,46 @@ body {
 }
 
 nav {
+    display: flex;
+    direction:initial; 
+    position: sticky;
     background-color: #333;
     color: #fff;
     padding: 10px;
+    gap: 16px;
 }
 
 nav ul {
+    display: flex;
     list-style-type: none;
-    margin: 0;
-    padding: 0;
+    margin: 10px;
+    padding: 10px;
 }
 
-nav li {
-    display: inline;
-    margin-right: 20px;
+nav a li {
+    display: flex;
+    
 }
-
+ 
+li { 
+    display: flex;
+}
 nav a {
+    margin-left: auto;
+    gap: 16px;
     text-decoration: none;
     color: #fff;
+}
+
+.carousel {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
 }
 
 .carousel img {
     width: 100%;
     height: auto;
-    
 }
 
 .calendar {
@@ -36,28 +51,6 @@ nav a {
     margin: 20px auto;
 }
 
-.carousel {
-    display: flex;
-    
-    width: auto;
-    height: auto;
-    max-width: 800px;
-    max-height: 800px;
-    margin: 20px auto;
-  
-}
-
-.title {
-    background: #000;
-    width: fit-content;
-    margin: 10px auto;
-}
-
-.explanation {
-    background-color: #000;
-    width: fit-content;
-    margin: 10px auto;
-}
 #datepicker {
     width: 100%;
     padding: 10px;
