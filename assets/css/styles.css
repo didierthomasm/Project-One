@@ -29,6 +29,7 @@ nav a {
     width: 100%;
     max-width: 800px;
     margin: 20px auto;
+    position: relative;
 }
 
 .carousel img {
@@ -45,4 +46,51 @@ nav a {
 #datepicker {
     width: 100%;
     padding: 10px;
+}
+
+.date-button {
+    display: block;
+    margin: 5px;
+    padding: 8px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.date-button.active {
+    background-color: #555;
+}
+
+.prev-button,
+.next-button {
+    display: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.prev-button {
+    left: 10px;
+}
+
+.next-button {
+    right: 10px;
+}
+
+.prev-button.active,
+.next-button.active {
+    display: block;
+}
+
+.prev-button:hover,
+.next-button:hover {
+    background-color: #555;
 }
