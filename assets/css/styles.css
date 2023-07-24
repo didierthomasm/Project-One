@@ -24,7 +24,7 @@ nav a li {
     display: flex;
     
 }
- 
+
 li { 
     display: flex;
 }
@@ -44,6 +44,14 @@ nav a {
 .carousel img {
     width: 100%;
     height: auto;
+}
+
+.carousel .carouselDiv {
+    display: none;
+}
+
+.carousel .carouselDiv:first-child {
+    display: block;
 }
 
 .calendar {
