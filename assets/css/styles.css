@@ -1,38 +1,85 @@
+:root {
+    --fontTitle: 'Orbitron', sans-serif;
+    --fontBody: 'Victor Mono', monospace;
+    --fontPixels: 'Press Start 2P', cursive;
+    --hoverScale: scale(1.1);
+    --transTime3s: .3s;
+    --transTime6s: .6s;
+}
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
+    background: url(../img/StarChildBg@2x.png) no-repeat center center fixed; 
+    background-size: cover;
 }
 
-nav {
-    display: flex;
-    direction:initial; 
-    position: sticky;
-    background-color: #333;
-    color: #fff;
-    padding: 10px;
-    gap: 16px;
+.font-brand {
+    font-family: var(--fontTitle);
 }
 
-nav ul {
-    display: flex;
-    list-style-type: none;
-    margin: 10px;
-    padding: 10px;
+.font-pixels {
+    font-family: var(--fontPixels);
 }
 
-nav a li {
-    display: flex;
-    
+.font-body {
+    font-family: var(--fontBody);
 }
- 
-li { 
-    display: flex;
+
+.calendar {
+    position: relative;
 }
-nav a {
-    margin-left: auto;
-    gap: 16px;
-    text-decoration: none;
-    color: #fff;
+
+#datepicker::-webkit-calendar-picker-indicator {
+    background: transparent;
+    position: absolute;
+    right: 0;
+    font-size: xx-large;
+    cursor: pointer;
+}
+
+input[type="date"] {
+    position: relative;
+    width: 15rem;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.fluxCap {
+    position: absolute;
+    right: 0;
+    z-index: 1;
+}
+
+.calendar:hover {
+    transform: var(--hoverScale);
+    transition: var(--transTime3s);
+    cursor: pointer;
+}
+
+#yourDates:hover {
+    transform: var(--hoverScale);
+    transition: var(--transTime3s);
+    cursor: pointer;
+}
+
+#todaysPic:hover {
+    transform: var(--hoverScale);
+    transition: var(--transTime3s);
+    cursor: pointer;
+}
+
+.btn:hover {
+    transform: var(--hoverScale);
+    transition: var(--transTime3s);
+}
+
+.trans-3s {
+    transition: var(--transTime3s);
+}
+
+.trans-6s {
+    transition: var(--transTime6s);
 }
 
 .carousel {
@@ -44,14 +91,4 @@ nav a {
 .carousel img {
     width: 100%;
     height: auto;
-}
-
-.calendar {
-    width: 200px;
-    margin: 20px auto;
-}
-
-#datepicker {
-    width: 100%;
-    padding: 10px;
 }
