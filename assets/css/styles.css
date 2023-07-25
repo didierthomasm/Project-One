@@ -46,6 +46,13 @@ nav a {
     height: auto;
 }
 
+/*.display-none {
+    display: none;
+}
+
+.display-block {
+    display: block;
+}*/
 .carousel .carouselDiv {
     display: none;
 }

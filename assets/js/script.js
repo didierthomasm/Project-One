@@ -10,9 +10,9 @@ class Carousel {
   showSlide() {
     this.slides.forEach((slide, index) => {
       if (index === this.currentSlideIndex) {
-        slide.style.display = 'block';
+        slide[index].style.display = 'block';
       } else {
-        slide.style.display = 'none'
+        slide[index].style.display = 'none'
       }
     });
   }
@@ -56,7 +56,6 @@ class Carousel {
 function getLocalStorage() {
   let localStorageDate =  localStorage.getItem('dates');
   let dates = JSON.parse(localStorageDate);
-  console.log(dates);
   return dates;
 }
 
@@ -64,7 +63,6 @@ function getLocalStorage() {
 function setLocalStorage(date) {
   let dateArray = JSON.parse(localStorage.getItem('dates')) || [];
   if (!dateArray.includes(date)) {
-    console.log(dateArray.length);
     if (dateArray.length < 5) {
       dateArray.push(date);
       localStorage.setItem('dates', JSON.stringify(dateArray));
@@ -94,7 +92,7 @@ function fetchApod(date) {
     })
     .then(function (data) {
       console.log("APOD Data:", data);
-      // carouselElement(data);
+      apodElement(data);
       // carouselFromStorage(data);
       return data;
 
@@ -164,24 +162,13 @@ initializeDatePicker();
 
 function carouselFromStorage() {
   let arrayDates = getLocalStorage();
+  arrayDates.forEach(element => {
+    fetchApod(element);
+  })
 
-  // Create an array of promises for all the fetch requests
-  const fetchPromises = arrayDates.map((date) => fetchApod(date));
-
-  // Use Promise.all to wait for all the fetch requests to complete before appending elements to the carousel
-  Promise.all(fetchPromises)
-    .then((results) => {
-      // Append fetched elements to the carousel
-      results.forEach((data) => {
-        apodElement(data);
-      });
-
-      // Start the existing carousel instance
-      carouselDataApod.startCarousel();
-    })
-    .catch((error) => {
-      console.log("Error fetching carousel elements:", error);
-    });
+  carouselDataApod.startCarousel();
 }
 
+
 carouselFromStorage()
+
