@@ -58,9 +58,9 @@ const errorMsgHideShow = () => {
 // Shows the picture of the day.
 const fetchDataFuncToday = () => {
     let today = dayjs().format('YYYY-MM-DD') ;
-    $('#yourDayBox').remove();
-    dateBoxHideShow();
+    // Hiddes the date selector input.
     
+    $('#yourDayBox').remove();
     renderDayBox();
     fetchData(today);
 };
@@ -115,9 +115,8 @@ const renderDayBox = () => {
 
 // Hiddes the date selector and renders a new box with all its elements from scratch, just for the APOD data.
 const renderPicBox = (pic, picTitle, picExplan) => {
-    
-    // Hiddes the date selector input.
-    dateBoxHideShow();
+
+    dateBoxHide();
 
     // Creates the DOM element with all its children, classes, and ids based on the input data.
     const picBox = $(`
@@ -203,7 +202,7 @@ const renderNeoBox = (inputDate, neos, neoCount) => {
     // Function to close everything after clicking the close button and returning to default view with date picker.
     const closeBox = () => {
         $('#yourDayBox').remove();
-        dateBoxHideShow();
+        dateBoxShow();
     };
 
     // Event callers for save and close buttons.
@@ -211,16 +210,16 @@ const renderNeoBox = (inputDate, neos, neoCount) => {
     neoBox.on('click', '#btnSave', saveDate);
 };
 
-// Function to be called for showing or hiding the date picker box.
-const dateBoxHideShow = () => {    
-    if (newDateBox.dataset.state == "visible") {
-        newDateBox.classList.add("hidden");
-        newDateBox.dataset.state = "hidden";
+// Function to be called for showing the date picker box.
+const dateBoxShow = () => {    
+    newDateBox.classList.remove("hidden");
+    newDateBox.dataset.state = "visible";    
+};
 
-    } else {
-        newDateBox.classList.remove("hidden");
-        newDateBox.dataset.state = "visible";
-    };    
+// Function to be called for hiding the date picker box.
+const dateBoxHide = () => {    
+    newDateBox.classList.add("hidden");
+    newDateBox.dataset.state = "hidden";
 };
 
 // To set the HTML attribute of 'max' for the type=date input.
