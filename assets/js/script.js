@@ -1,33 +1,45 @@
 // Function to fetch image URL for a given date
-async function fetchImageForDate(date) {
+function fetchImageForDate(date) {
   var apiKey = 'DhZgqHPR8sd2nvKgECz74jcTRRxDcioHOCvgtd7z';
   var apodUrl = 'https://api.nasa.gov/planetary/apod?api_key=' + apiKey + '&date=' + date;
 
-  var response = await fetch(apodUrl);
-  var data = await response.json();
-  return data.url;
+  return fetch(apodUrl)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      return data.url;
+    });
 }
 
 // Function to create the carousel with images
-async function createCarousel() {
+function createCarousel() {
   var carouselDiv = document.querySelector(".carousel");
   var dates = JSON.parse(localStorage.getItem("selectedDates")) || [];
 
   carouselDiv.innerHTML = ""; // Clear existing carousel content
 
-  for (var date of dates) {
-    var imageUrl = await fetchImageForDate(date);
-    var img = document.createElement("img");
-    img.src = imageUrl;
-    img.style.display = "none"; // Hide the image initially
-    carouselDiv.appendChild(img);
-  }
+  // Create an array of promises for each fetchImageForDate call
+  var promises = dates.map(function (date) {
+    return fetchImageForDate(date);
+  });
 
-  // Display the first image
-  var firstImage = carouselDiv.querySelector("img");
-  if (firstImage) {
-    firstImage.style.display = "block";
-  }
+  // Resolve all promises and append the images to the carousel
+  Promise.all(promises)
+    .then(function (imageUrls) {
+      imageUrls.forEach(function (imageUrl) {
+        var img = document.createElement("img");
+        img.src = imageUrl;
+        img.style.display = "none"; // Hide the image initially
+        carouselDiv.appendChild(img);
+      });
+
+      // Display the first image
+      var firstImage = carouselDiv.querySelector("img");
+      if (firstImage) {
+        firstImage.style.display = "block";
+      }
+    });
 }
 
 // Function to initialize the date picker
