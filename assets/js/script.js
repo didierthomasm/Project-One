@@ -2,8 +2,10 @@ const datepicker = document.getElementById("datepicker");
 const newDateBox = document.querySelector("#newDateBox");
 const todaysPic = document.querySelector('#todaysPic');
 const errorMsg = document.querySelector("#errorMsg");
+const carouselDiv = document.querySelector(".carousel");
 const mainContent = $("#mainContent");
 const yourDayBox = $("#yourDayBox");
+
 const key = 'DhZgqHPR8sd2nvKgECz74jcTRRxDcioHOCvgtd7z'; // As a global variable.
 
 let myDatesArray = []; // The bookmarks array as a global variable.
@@ -236,6 +238,155 @@ const todaysDate = () => {
     today.html(todaysDay);
 };
 
+
+// ---------------------------------- iderobina1
+
+function createCarousel() {
+    getData ();
+  
+    carouselDiv.innerHTML = ""; // Clear existing carousel content
+  
+    // Create an array of promises for each fetchImageForDate call
+    var promises = myDatesArray.map(function (date) {
+      return fetchImageForDate(date);
+    });
+  
+    // Resolve all promises and append the images to the carousel
+    Promise.all(promises)
+      .then(function (imageUrls) {
+        imageUrls.forEach(function (imageUrl) {
+          var img = document.createElement("img");
+          img.src = imageUrl;
+          img.style.display = "none"; // Hide the image initially
+          carouselDiv.appendChild(img);
+        });
+  
+        // Display the first image
+        var firstImage = carouselDiv.querySelector("img");
+        if (firstImage) {
+          firstImage.style.display = "block";
+        }
+      });
+}
+
+function saveSelectedDate(date) {
+    getData ();
+    
+    if (myDatesArray.length >= 5) {
+      myDatesArray.pop(); // Remove the last date if there are already 5 dates
+    }
+    myDatesArray.unshift(date); // Add the new date to the beginning of the array
+    storeData();
+    //duda de si tengo que llamar fetchdata....
+}
+
+// Function to update date buttons in the carousel
+function updateDateButtons() {
+    var myDatesArray = JSON.parse(localStorage.getItem("selectedDates")) || [];
+    var buttonsContainer = document.querySelector(".buttons-container");
+    buttonsContainer.innerHTML = ""; // Clear existing buttons
+  
+    if (myDatesArray.length === 0) {
+      return; // Don't show buttons if no date is selected
+    }
+  
+    myDatesArray.forEach(function (date, index) {
+      var button = document.createElement("button");
+      button.textContent = date;
+      button.classList.add("date-button");
+      buttonsContainer.appendChild(button);
+  
+      button.addEventListener("click", function () {
+        showImageForDate(date); // Call the function to show the image for the selected date
+      });
+    });
+  
+    // Refresh the carousel images with updated dates
+    createCarousel();
+  
+    // Append prev and next buttons after selecting a date
+    var prevButton = document.querySelector(".prev-button");
+    var nextButton = document.querySelector(".next-button");
+    if (!prevButton && !nextButton && myDatesArray.length > 0) {
+      initializeNavigationButtons();
+    }
+}
+
+// Function to initialize previous and next buttons
+function initializeNavigationButtons() {
+    var prevButton = document.createElement("button");
+    var nextButton = document.createElement("button");
+    var buttonsContainer = document.querySelector(".buttons-container");
+
+
+    function initializeNavigationButtons() {
+        var prevButton = document.createElement("button");
+        var nextButton = document.createElement("button");
+        var buttonsContainer = document.querySelector(".buttons-container");
+        var myDatesArray = JSON.parse(localStorage.getItem("selectedDates")) || [];
+
+        var currentIndex = 0;
+        updateSlide(currentIndex);
+
+        prevButton.textContent = "<";
+        prevButton.classList.add("prev-button");
+        nextButton.textContent = ">";
+        nextButton.classList.add("next-button");
+
+        prevButton.addEventListener("click", function () {
+            currentIndex--;
+            if (currentIndex < 0) {
+            currentIndex = 0;
+            }
+            updateSlide(currentIndex);
+        });
+
+        nextButton.addEventListener("click", function () {
+            currentIndex++;
+            if (currentIndex >= myDatesArray.length) {
+            currentIndex = myDatesArray.length - 1;
+            }
+            updateSlide(currentIndex);
+        });
+
+        function updateSlide(index) {
+            var buttons = document.querySelectorAll(".date-button");
+            buttons.forEach(function (button) {
+            return button.classList.remove("active");
+            });
+            if (buttons[index]) {
+            buttons[index].classList.add("active");
+            }
+
+            var images = document.querySelectorAll(".carousel img");
+            images.forEach(function (img) {
+            return (img.style.display = "none");
+            }); // Hide all images
+
+            if (images[index]) {
+            images[index].style.display = "block"; // Show the selected image
+            }
+
+            if (index === myDatesArray.length - 1) {
+            nextButton.style.display = "none";
+            } else {
+            nextButton.style.display = "block";
+            }
+            if (index === 0) {
+            prevButton.style.display = "none";
+            } else {
+            prevButton.style.display = "block";
+            }
+        }
+
+        buttonsContainer.appendChild(prevButton);
+        buttonsContainer.appendChild(nextButton);
+    } 
+}
+
+// ----------------------------------
+
+
 // Function to be executed after loading the site.
 $(document).ready(function() {
     setMaxDate();
@@ -253,18 +404,3 @@ $(document).ready(function() {
 
 
 
-
-
-
-// Call the function to initialize the date picker
-
-// const img = document.createElement("img");
-// img.src = imgURL;
-// const explanationP = document.createElement("p");
-// explanationP.textContent = explan;
-// const titleHeader = document.createElement("h1");
-// titleHeader.textContent = title;
-// carouselDiv.innerHTML = ''; // Clear any existing content in the carousel
-// carouselDiv.appendChild(img); // Append the image to the carousel
-// carouselDiv.appendChild(titleHeader);
-// carouselDiv.appendChild(explanationP); // Append the explanation paragraph to the carousel
