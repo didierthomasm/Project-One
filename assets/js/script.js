@@ -17,7 +17,7 @@ let myDatesArray = []; // The bookmarks array as a global variable.
 const storeData = () => localStorage.setItem("myDates", JSON.stringify(myDatesArray));
 // To access the local storage.
 const getData = () => {
-    myDatesArray = JSON.parse(localStorage.getItem("myDates")); 
+    myDatesArray = JSON.parse(localStorage.getItem("myDates"));
 };
 
 // After being called by clicking My Dates button, it shows the My Dates carousel.
@@ -41,10 +41,10 @@ const closeMyDates = (e) => {
 // To be called every time the site is loaded and download the local storage or set a new item if it's empty.
 const getSavedDates = () => {
     if (localStorage.getItem("myDates") === null) {
-        storeData(); 
+        storeData();
     } else {
-        getData(); 
-    };
+        getData();
+    }
 };
 
 // Function to add the initial event listeners as the page loads.
@@ -58,7 +58,7 @@ const eventListenersFunc = () => {
 const fetchDataFuncInput = (e) => {
     e.stopPropagation(); // To prevent from closing My Dates carousel when open.
     let selectedDate = datepicker.value;
-    
+
     // Error message for if the user selects an invalid date.
     if (selectedDate >= '1995-06-24' && selectedDate <= dayjs().format('YYYY-MM-DD')) {
         renderDayBox();
@@ -66,12 +66,12 @@ const fetchDataFuncInput = (e) => {
     } else {
         errorMsgHideShow();
         setTimeout(errorMsgHideShow, 5000);
-    };
+    }
 };
 
 // If the error message is shown, hide it; if hidden, show it.
 const errorMsgHideShow = () => {
-    if (errorMsg.dataset.state == "hidden") {
+    if (errorMsg.dataset.state === "hidden") {
         errorMsg.dataset.state = "shown";
         errorMsg.classList.remove("hidden");
     } else {
@@ -85,7 +85,7 @@ const fetchDataFuncToday = (e) => {
     e.stopPropagation(); // To prevent from closing My Dates carousel when open.
     let today = dayjs().format('YYYY-MM-DD') ;
 
-    
+
     $('#yourDayBox').remove(); // Removes any active DayBox present to open a new one.
     renderDayBox();
     fetchData(today);
@@ -96,7 +96,7 @@ const fetchDataFuncBookmark = (e) => {
     e.stopPropagation(); // To prevent from closing My Dates carousel when open.
     let event = e.target;
     let BMDate = event.dataset.date // Each bookmark has a date saved as a data-date attribute.
-    
+
     $('#yourDayBox').remove(); // Removes any active DayBox present to open a new one.
     renderDayBox();
     fetchData(BMDate);
@@ -113,7 +113,7 @@ const deleteBookmark = (e) => {
 
 // Func called after loading the site and after making changes to saved dates.
 const renderCarousel = () => {
-    
+
     // To render bookmarks only if the local storage isn't empty.
     if (myDatesArray.length > 0) {
         for (i = 0; i < myDatesArray.length; i++) {
@@ -124,57 +124,57 @@ const renderCarousel = () => {
                 <button id="btnRemove" class="btn bg-gray-200/30 hover:bg-red-500/30 px-5 mx-5 text-xs font-brand font-black text-gray-200 rounded-md" data-index="${i}">REMOVE</button>
             </div>
             `);
-            
+
             bookmarkZone.append(bookmark);
             bookmark.on('click', '#btnRemove', deleteBookmark); // To activate the REMOVE button.
             bookmark.on('click', '#bookmarkImg', fetchDataFuncBookmark); // To render the saved bookmark.
-        };
-        
+        }
+
     } else {
         emptyMsg.classList.remove('hidden'); // To display a message if the local storage is empty.
-    };
-    
+    }
+
 };
 
 // Added a parameter to the function to have various input sources.
 const fetchData = (inputDate) => {
-    
+
     const getNeow = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${inputDate}&end_date=${inputDate}&api_key=${key}`;
     const getApod = `https://api.nasa.gov/planetary/apod?api_key=${key}&date=${inputDate}`;
     let imgURL = "";
 
     fetch(getApod)
-    .then(function (response) {
-        return response.json();
-    })
-    .then(function (data) {
-        // console.log("APOD Data:", data);
-        imgURL = data.url;
-        let explan = data.explanation;
-        let title = data.title;
-        
-        // A box is rendered solely for the APOD data.
-        renderPicBox(imgURL, title, explan); 
-    })
-    .catch(function (error) {
-        console.log("Error fetching APOD data:", error);
-    });
+      .then(function (response) {
+          return response.json();
+      })
+      .then(function (data) {
+          // console.log("APOD Data:", data);
+          imgURL = data.url;
+          let explan = data.explanation;
+          let title = data.title;
+
+          // A box is rendered solely for the APOD data.
+          renderPicBox(imgURL, title, explan);
+      })
+      .catch(function (error) {
+          console.log("Error fetching APOD data:", error);
+      });
 
     fetch(getNeow)
-    .then(function (response) {
-        return response.json();
-    })
-    .then(function (data) {
-        // console.log("NEOW Data:", data);
-        let neos = data.near_earth_objects[inputDate]; // To access the data object property by name and create a new array from the fetched data.
-        let neoCount = neos.length;
+      .then(function (response) {
+          return response.json();
+      })
+      .then(function (data) {
+          // console.log("NEOW Data:", data);
+          let neos = data.near_earth_objects[inputDate]; // To access the data object property by name and create a new array from the fetched data.
+          let neoCount = neos.length;
 
-        // A box is rendered solely for the NeoWs data.
-        renderNeoBox(inputDate, neos, neoCount, imgURL);
-    })
-    .catch(function (error) {
-        console.log("Error fetching NEOW data:", error);
-    })
+          // A box is rendered solely for the NeoWs data.
+          renderNeoBox(inputDate, neos, neoCount, imgURL);
+      })
+      .catch(function (error) {
+          console.log("Error fetching NEOW data:", error);
+      })
 };
 
 // To create a new section to contain the data box.
@@ -224,7 +224,7 @@ const renderNeoBox = (inputDate, neos, neoCount, imgURL) => {
 
         // New string concatenated to the new li elements.
         neoLiElements += `<li>${i + 1}: ${neoName} <a class="underline" href="https://eyes.nasa.gov/apps/asteroids/#/asteroids/${neoCode}" target="_blank">Live Location</a></li>`;
-    };
+    }
 
     // Create the complete box of Neos under the picture box.
     const neoBox = $(`
@@ -250,11 +250,11 @@ const renderNeoBox = (inputDate, neos, neoCount, imgURL) => {
     // Appended to the box.
     $('#yourDayBox').append(neoBox);
     const savedMsg = $('#saved'); // Save message defined.
-    
+
     // Function to save the data after clicking the save button.
     const saveDate = (e) => {
         e.stopPropagation();
-        
+
         savedMsg.addClass('opacity-100');
         const remSaveMsg = () => {
             savedMsg.addClass('trans-6s');
@@ -262,9 +262,9 @@ const renderNeoBox = (inputDate, neos, neoCount, imgURL) => {
         };
 
         // This line is to find if the date is already saved.
-        let dateFinder = myDatesArray.find(element => element.d == inputDate);
+        let dateFinder = myDatesArray.find(element => element.d === inputDate);
 
-        if (dateFinder == undefined) {
+        if (dateFinder === undefined) {
             myDatesArray.push( {d: inputDate, p: imgURL} ); // (d) for day, (p) for picture.
             storeData();
             bookmarkZone.children().remove()
@@ -272,7 +272,7 @@ const renderNeoBox = (inputDate, neos, neoCount, imgURL) => {
         }
 
         setTimeout(remSaveMsg, 1000); // Save message disappears after a second.
-        
+
         neoBox.off('click', '#btnSave', saveDate);
     };
 
@@ -290,13 +290,13 @@ const renderNeoBox = (inputDate, neos, neoCount, imgURL) => {
 };
 
 // Function to be called for showing the date picker box.
-const dateBoxShow = () => {    
+const dateBoxShow = () => {
     newDateBox.classList.remove("hidden");
-    newDateBox.dataset.state = "visible";    
+    newDateBox.dataset.state = "visible";
 };
 
 // Function to be called for hiding the date picker box.
-const dateBoxHide = () => {    
+const dateBoxHide = () => {
     newDateBox.classList.add("hidden");
     newDateBox.dataset.state = "hidden";
 };
@@ -323,10 +323,10 @@ $(document).ready(function() {
     getSavedDates();
     renderCarousel();
 
-  
+
     setInterval(() => {
-      todaysDate();
-  
+        todaysDate();
+
     }, 3600000);
 });
 
