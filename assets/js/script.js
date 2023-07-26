@@ -51,7 +51,7 @@ const getSavedDates = () => {
 const eventListenersFunc = () => {
     datepicker.addEventListener("change", fetchDataFuncInput);  // For the type-date input.
     todaysPic.addEventListener("click", fetchDataFuncToday);    // For the today's pic button.
-    myDatesBtn.addEventListener('click', openMyDates); // To open the bookmarks (My Dates).
+    myDatesBtn.addEventListener("click", openMyDates); // To open the bookmarks (My Dates).
 };
 
 // To fetch data from the APIs and render a new box when the user selects a date in the input.
@@ -128,12 +128,18 @@ const renderCarousel = () => {
             bookmarkZone.append(bookmark);
             bookmark.on('click', '#btnRemove', deleteBookmark); // To activate the REMOVE button.
             bookmark.on('click', '#bookmarkImg', fetchDataFuncBookmark); // To render the saved bookmark.
+            bookmarkZone.on("mousemove", "#bookmark", mouseMoveCarousel); // To move across the carousel by dragging bookmarks with the mouse.
         }
 
     } else {
         emptyMsg.classList.remove('hidden'); // To display a message if the local storage is empty.
     }
 
+};
+
+const mouseMoveCarousel = (e) => {
+    let event = e.target
+    event.scrollLeft.pageX;
 };
 
 // Added a parameter to the function to have various input sources.
