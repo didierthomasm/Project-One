@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="color-scheme" content="dark">
         <script src="https://kit.fontawesome.com/6e39ad8a93.js" crossorigin="anonymous"></script>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,22 +20,25 @@
             <section class="mainHeader flex flex-wrap justify-between px-10 py-3 bg-gray-900/50 items-center backdrop-blur-md">
                 <h1 class="font-brand text-4xl font-thin text-gray-200 w-1/3"><i class="fa-regular fa-user-astronaut text-4xl pr-3"></i>Space<span class="font-black">Child</span></h1>
                 
-                <div id="yourDates" class="flex flex-col items-center w-1/3">
-                    <i class="fa-regular fa-telescope text-4xl text-gray-200"></i>
-                    <p class="text-gray-200 font-brand text-center">YOUR<br>DATES</p>
+                <div class="flex flex-col items-center w-1/3">
+                    <div id="myDatesBtn" class="flex flex-col items-center text-gray-200 hover:text-gray-400">
+                        <i class="fa-regular fa-telescope text-4xl"></i>
+                        <p class="font-brand text-center">MY<br>DATES</p>
+                    </div>
                 </div>
                 
                 <div class="w-1/3 flex justify-end">
-                    <a id="todaysPic" class="font-brand text-gray-200 flex flex-col items-center">
+                    <a id="todaysPic" class="font-brand text-gray-200 hover:text-gray-400 flex flex-col items-center">
                         <P class="text-2xl font-bold todaysDate"></p>
                         <p class="text-base">CLICK FOR TODAY'S PIC</p>
                     </a>
                 </div>
             </section>
                 
-            <div class="carousel " id="carousel">
-                <!-- Carousel images will be added dynamically using JavaScript -->
-        
+            <div class="carousel grid justify-center w-screen overflow-y-hidden bg-black/70 backdrop-blur-md" id="carousel">
+                <div id="bookmarkZone" class="flex flex-nowrap w-fit items-center justify-center overflow-x-auto">
+                    <h1 id="emptyMsg" class="font-brand font-bold text-3xl hidden">EMPTY</h1>
+                </div>
             </div>
         </header>
 
@@ -45,12 +49,12 @@
         </section>
         
         <main id="mainContent" class="flex flex-col items-center justify-center">
-            <section id="newDateBox" class="flex flex-col justify-center items-center rounded-lg py-5 px-10 bg-black/70 w-fit trans-3s" data-state="visible">
+            <section id="newDateBox" class="flex flex-col justify-center items-center rounded-lg py-5 px-10 bg-black/70 w-fit trans-3s drop-shadow-lg backdrop-blur-md" data-state="visible">
                 <h4 class="text-xl font-bold font-brand text-gray-200 mb-4">SELECT A MEANINGFULL DATE</h4>
                 <p class="text-center text-sm font-brand font-thin text-gray-200 mb-8">CLICK ON THE FLUX CAPACITOR<br>TO OPEN THE CALENDAR</p>
-                <div class="calendar flex flex-nowrap justify-center items-center" id="calendar">
-                    <input class="bg-black/0 font-pixels text-gray-200" type="date" min="1995-06-24" id="datepicker" placeholder="Select a date">
-                    <i class="fa-regular fa-flux-capacitor text-4xl text-gray-200 fluxCap"></i>
+                <div class="calendar flex flex-nowrap justify-center items-center text-gray-200 hover:text-gray-400 mb-3" id="calendar">
+                    <input class="bg-black/0 font-pixels" type="date" min="1995-06-24" id="datepicker" placeholder="Select a date">
+                    <i class="fa-regular fa-flux-capacitor text-4xl fluxCap"></i>
                 </div>
             </section>
 
@@ -69,7 +73,14 @@
 
 
     
-<!-- <section id="yourDayBox" class="flex-col items-center justify-center">
+<!--<div id="bookmark" class="flex flex-col items-center justify-between h-4/5 aspect-square mx-8" data-index="0">
+        <div class="w-4/6 h-4/6 aspect-square bg-cover rounded-full border glow-light" style="background-image: url(https://apod.nasa.gov/apod/image/1904/LeoTrioBauer1024.jpg);"></div>
+        <p class="font-pixels text-xs text-gray-200 h-1/6 flex items-center">2019-04-18</p>
+        <button id="btnRemove" class="btn bg-gray-200/30 hover:bg-red-500/30 px-5 mx-5 text-xs font-brand font-black text-gray-200 rounded-md">REMOVE</button>
+    </div> 
+    
+    
+    <section id="yourDayBox" class="flex-col items-center justify-center">
         <div id="picBox" class="flex flex-col items-center justify-between bg-black/50 p-8 pb-16 max-w-4xl w-fit border border-gray-200 rounded-t-2xl">
             <h1 class="text-3xl font-bold font-brand text-gray-200 mb-8 text-center">YOUR MEANINGFUL DAY PIC</h1>
             <div class="relative flex justify-center items-center">

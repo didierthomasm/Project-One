@@ -5,6 +5,7 @@
     --hoverScale: scale(1.1);
     --transTime3s: .3s;
     --transTime6s: .6s;
+    color-scheme: dark;
 }
 
 body {
@@ -12,6 +13,7 @@ body {
     font-family: Arial, sans-serif;
     background: url(../img/StarChildBg@2x.png) no-repeat center center fixed; 
     background-size: cover;
+    background-color: black;
 }
 
 .font-brand {
@@ -57,7 +59,7 @@ input[type="date"] {
     cursor: pointer;
 }
 
-#yourDates:hover {
+#myDatesBtn:hover {
     transform: var(--hoverScale);
     transition: var(--transTime3s);
     cursor: pointer;
@@ -82,13 +84,35 @@ input[type="date"] {
     transition: var(--transTime6s);
 }
 
-.carousel {
-    width: 100%;
-    max-width: 800px;
-    margin: 20px auto;
+#carousel {
+    height: 0vh;
+    transition: var(--transTime6s);
 }
 
-.carousel img {
-    width: 100%;
-    height: auto;
+.carousel-shown{
+    height: 20vh !important;
+}
+
+#bookmarkZone {
+    height: 20vh;
+}
+
+.glow-light:hover {
+    box-shadow: 0px 0px 2vh rgb(229 231 235 / 1);
+    transition: 1s;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar { 
+    height: .5vh;
+}
+
+::-webkit-scrollbar-track {
+    background-color: rgb(0 0 0 / 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+    height: 50px;
+    background-color: rgb(229 231 235 / 0.3);
+    border-radius: 3px;
 }
