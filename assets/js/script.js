@@ -2,7 +2,10 @@ const datepicker = document.getElementById("datepicker");
 const newDateBox = document.querySelector("#newDateBox");
 const todaysPic = document.querySelector('#todaysPic');
 const errorMsg = document.querySelector("#errorMsg");
-const carouselDiv = document.querySelector(".carousel");
+const carousel = document.querySelector("#carousel");
+const myDatesBtn = document.querySelector("#myDatesBtn");
+const emptyMsg = document.querySelector("#emptyMsg");
+const bookmarkZone = $("#bookmarkZone");
 const mainContent = $("#mainContent");
 const yourDayBox = $("#yourDayBox");
 
@@ -17,6 +20,24 @@ const getData = () => {
     myDatesArray = JSON.parse(localStorage.getItem("myDates")); 
 };
 
+// After being called by clicking My Dates button, it shows the My Dates carousel.
+const openMyDates = (e) => {
+    e.stopPropagation();
+    myDatesBtn.removeEventListener('click', openMyDates); // My Saves Btn now disabled.
+    carousel.classList.add('carousel-shown'); // This class just changes height, from 0vh to 20vh.
+    document.addEventListener('click', closeMyDates); // A click event for the whole document.
+};
+
+// After being called by clicking anywhere outside the carousel, it closes the My Dates carousel.
+const closeMyDates = (e) => {
+    let event = !carousel.contains(e.target); // A click
+
+    if (event) {
+        carousel.classList.remove('carousel-shown');
+        myDatesBtn.addEventListener('click', openMyDates);
+    }
+};
+
 // To be called every time the site is loaded and download the local storage or set a new item if it's empty.
 const getSavedDates = () => {
     if (localStorage.getItem("myDates") === null) {
@@ -27,13 +48,15 @@ const getSavedDates = () => {
 };
 
 // Function to add the initial event listeners as the page loads.
-function eventListenersFunc () {
+const eventListenersFunc = () => {
     datepicker.addEventListener("change", fetchDataFuncInput);  // For the type-date input.
     todaysPic.addEventListener("click", fetchDataFuncToday);    // For the today's pic button.
-}
+    myDatesBtn.addEventListener('click', openMyDates); // To open the bookmarks (My Dates).
+};
 
-// To fetch data from the API and render a new box when the user selects a date in the input.
-const fetchDataFuncInput = () => {
+// To fetch data from the APIs and render a new box when the user selects a date in the input.
+const fetchDataFuncInput = (e) => {
+    e.stopPropagation(); // To prevent from closing My Dates carousel when open.
     let selectedDate = datepicker.value;
     
     // Error message for if the user selects an invalid date.
@@ -55,23 +78,70 @@ const errorMsgHideShow = () => {
         errorMsg.dataset.state = "hidden";
         errorMsg.classList.add("hidden");
     }
-}
+};
 
 // Shows the picture of the day.
-const fetchDataFuncToday = () => {
+const fetchDataFuncToday = (e) => {
+    e.stopPropagation(); // To prevent from closing My Dates carousel when open.
     let today = dayjs().format('YYYY-MM-DD') ;
-    // Hiddes the date selector input.
+
     
-    $('#yourDayBox').remove();
+    $('#yourDayBox').remove(); // Removes any active DayBox present to open a new one.
     renderDayBox();
     fetchData(today);
 };
 
-// Added a parameter to the function to have various input sources.
-function fetchData(inputDate) {
+// To fetch data from the APIs and render a new box when the user selects a bookmark (saved date).
+const fetchDataFuncBookmark = (e) => {
+    e.stopPropagation(); // To prevent from closing My Dates carousel when open.
+    let event = e.target;
+    let BMDate = event.dataset.date // Each bookmark has a date saved as a data-date attribute.
     
-    var getNeow = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${inputDate}&end_date=${inputDate}&api_key=${key}`;
-    var getApod = `https://api.nasa.gov/planetary/apod?api_key=${key}&date=${inputDate}`;
+    $('#yourDayBox').remove(); // Removes any active DayBox present to open a new one.
+    renderDayBox();
+    fetchData(BMDate);
+};
+
+// Func to run the remove button from the bookmarks.
+const deleteBookmark = (e) => {
+    let event = e.target;
+
+    event.parentElement.remove(); // Removes the whole bookmark element.
+    myDatesArray.splice(event.dataset.index, 1); // To erase from the saved dates array from a specific position.
+    storeData(); // To update the local storage.
+};
+
+// Func called after loading the site and after making changes to saved dates.
+const renderCarousel = () => {
+    
+    // To render bookmarks only if the local storage isn't empty.
+    if (myDatesArray.length > 0) {
+        for (i = 0; i < myDatesArray.length; i++) {
+            const bookmark = $(`
+            <div id="bookmark" class="flex flex-col items-center justify-between h-4/5 aspect-square mx-12" data-index="${i}">
+                <div id="bookmarkImg" class="w-4/6 h-4/6 aspect-square bg-cover rounded-full border glow-light" style="background-image: url(${myDatesArray[i].p});" data-date="${myDatesArray[i].d}"></div>
+                <p class="font-pixels text-xs text-gray-200 h-1/6 flex items-center">${myDatesArray[i].d}</p>
+                <button id="btnRemove" class="btn bg-gray-200/30 hover:bg-red-500/30 px-5 mx-5 text-xs font-brand font-black text-gray-200 rounded-md" data-index="${i}">REMOVE</button>
+            </div>
+            `);
+            
+            bookmarkZone.append(bookmark);
+            bookmark.on('click', '#btnRemove', deleteBookmark); // To activate the REMOVE button.
+            bookmark.on('click', '#bookmarkImg', fetchDataFuncBookmark); // To render the saved bookmark.
+        };
+        
+    } else {
+        emptyMsg.classList.remove('hidden'); // To display a message if the local storage is empty.
+    };
+    
+};
+
+// Added a parameter to the function to have various input sources.
+const fetchData = (inputDate) => {
+    
+    const getNeow = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${inputDate}&end_date=${inputDate}&api_key=${key}`;
+    const getApod = `https://api.nasa.gov/planetary/apod?api_key=${key}&date=${inputDate}`;
+    let imgURL = "";
 
     fetch(getApod)
     .then(function (response) {
@@ -79,7 +149,7 @@ function fetchData(inputDate) {
     })
     .then(function (data) {
         // console.log("APOD Data:", data);
-        let imgURL = data.url;
+        imgURL = data.url;
         let explan = data.explanation;
         let title = data.title;
         
@@ -100,7 +170,7 @@ function fetchData(inputDate) {
         let neoCount = neos.length;
 
         // A box is rendered solely for the NeoWs data.
-        renderNeoBox(inputDate, neos, neoCount);
+        renderNeoBox(inputDate, neos, neoCount, imgURL);
     })
     .catch(function (error) {
         console.log("Error fetching NEOW data:", error);
@@ -139,7 +209,7 @@ const renderPicBox = (pic, picTitle, picExplan) => {
 };
 
 // Renders a new box positioned under the APOD box with all its elements from scratch, just for the NeoWs data.
-const renderNeoBox = (inputDate, neos, neoCount) => {
+const renderNeoBox = (inputDate, neos, neoCount, imgURL) => {
 
     let neoLiElements = ""; // To define the new DOM's elements as a string for further appending. (ul of Neos)
 
@@ -182,27 +252,34 @@ const renderNeoBox = (inputDate, neos, neoCount) => {
     const savedMsg = $('#saved'); // Save message defined.
     
     // Function to save the data after clicking the save button.
-    const saveDate = () => {
+    const saveDate = (e) => {
+        e.stopPropagation();
+        
         savedMsg.addClass('opacity-100');
         const remSaveMsg = () => {
             savedMsg.addClass('trans-6s');
             savedMsg.removeClass('opacity-100');
         };
 
-        let dateFinder = myDatesArray.find(element => element == inputDate);
+        // This line is to find if the date is already saved.
+        let dateFinder = myDatesArray.find(element => element.d == inputDate);
 
         if (dateFinder == undefined) {
-            myDatesArray.push(inputDate);
+            myDatesArray.push( {d: inputDate, p: imgURL} ); // (d) for day, (p) for picture.
             storeData();
+            bookmarkZone.children().remove()
+            renderCarousel(); // To update the carousel on the interface.
         }
 
-        setTimeout(remSaveMsg, 1000);
+        setTimeout(remSaveMsg, 1000); // Save message disappears after a second.
         
         neoBox.off('click', '#btnSave', saveDate);
     };
 
-    // Function to close everything after clicking the close button and returning to default view with date picker.
-    const closeBox = () => {
+    // Function to close everything after clicking the close button and returning to default view with the date picker.
+    const closeBox = (e) => {
+        e.stopPropagation();
+
         $('#yourDayBox').remove();
         dateBoxShow();
     };
@@ -238,161 +315,13 @@ const todaysDate = () => {
     today.html(todaysDay);
 };
 
-
-// ---------------------------------- iderobina1
-
-function createCarousel() {
-    getData ();
-  
-    carouselDiv.innerHTML = ""; // Clear existing carousel content
-  
-    // Create an array of promises for each fetchImageForDate call
-    var promises = myDatesArray.map(function (date) {
-      return fetchImageForDate(date);
-    });
-  
-    // Resolve all promises and append the images to the carousel
-    Promise.all(promises)
-      .then(function (imageUrls) {
-        imageUrls.forEach(function (imageUrl) {
-          var img = document.createElement("img");
-          img.src = imageUrl;
-          img.style.display = "none"; // Hide the image initially
-          carouselDiv.appendChild(img);
-        });
-  
-        // Display the first image
-        var firstImage = carouselDiv.querySelector("img");
-        if (firstImage) {
-          firstImage.style.display = "block";
-        }
-      });
-}
-
-function saveSelectedDate(date) {
-    getData ();
-    
-    if (myDatesArray.length >= 5) {
-      myDatesArray.pop(); // Remove the last date if there are already 5 dates
-    }
-    myDatesArray.unshift(date); // Add the new date to the beginning of the array
-    storeData();
-    //duda de si tengo que llamar fetchdata....
-}
-
-// Function to update date buttons in the carousel
-function updateDateButtons() {
-    var myDatesArray = JSON.parse(localStorage.getItem("selectedDates")) || [];
-    var buttonsContainer = document.querySelector(".buttons-container");
-    buttonsContainer.innerHTML = ""; // Clear existing buttons
-  
-    if (myDatesArray.length === 0) {
-      return; // Don't show buttons if no date is selected
-    }
-  
-    myDatesArray.forEach(function (date, index) {
-      var button = document.createElement("button");
-      button.textContent = date;
-      button.classList.add("date-button");
-      buttonsContainer.appendChild(button);
-  
-      button.addEventListener("click", function () {
-        showImageForDate(date); // Call the function to show the image for the selected date
-      });
-    });
-  
-    // Refresh the carousel images with updated dates
-    createCarousel();
-  
-    // Append prev and next buttons after selecting a date
-    var prevButton = document.querySelector(".prev-button");
-    var nextButton = document.querySelector(".next-button");
-    if (!prevButton && !nextButton && myDatesArray.length > 0) {
-      initializeNavigationButtons();
-    }
-}
-
-// Function to initialize previous and next buttons
-function initializeNavigationButtons() {
-    var prevButton = document.createElement("button");
-    var nextButton = document.createElement("button");
-    var buttonsContainer = document.querySelector(".buttons-container");
-
-
-    function initializeNavigationButtons() {
-        var prevButton = document.createElement("button");
-        var nextButton = document.createElement("button");
-        var buttonsContainer = document.querySelector(".buttons-container");
-        var myDatesArray = JSON.parse(localStorage.getItem("selectedDates")) || [];
-
-        var currentIndex = 0;
-        updateSlide(currentIndex);
-
-        prevButton.textContent = "<";
-        prevButton.classList.add("prev-button");
-        nextButton.textContent = ">";
-        nextButton.classList.add("next-button");
-
-        prevButton.addEventListener("click", function () {
-            currentIndex--;
-            if (currentIndex < 0) {
-            currentIndex = 0;
-            }
-            updateSlide(currentIndex);
-        });
-
-        nextButton.addEventListener("click", function () {
-            currentIndex++;
-            if (currentIndex >= myDatesArray.length) {
-            currentIndex = myDatesArray.length - 1;
-            }
-            updateSlide(currentIndex);
-        });
-
-        function updateSlide(index) {
-            var buttons = document.querySelectorAll(".date-button");
-            buttons.forEach(function (button) {
-            return button.classList.remove("active");
-            });
-            if (buttons[index]) {
-            buttons[index].classList.add("active");
-            }
-
-            var images = document.querySelectorAll(".carousel img");
-            images.forEach(function (img) {
-            return (img.style.display = "none");
-            }); // Hide all images
-
-            if (images[index]) {
-            images[index].style.display = "block"; // Show the selected image
-            }
-
-            if (index === myDatesArray.length - 1) {
-            nextButton.style.display = "none";
-            } else {
-            nextButton.style.display = "block";
-            }
-            if (index === 0) {
-            prevButton.style.display = "none";
-            } else {
-            prevButton.style.display = "block";
-            }
-        }
-
-        buttonsContainer.appendChild(prevButton);
-        buttonsContainer.appendChild(nextButton);
-    } 
-}
-
-// ----------------------------------
-
-
 // Function to be executed after loading the site.
 $(document).ready(function() {
     setMaxDate();
     todaysDate();
     eventListenersFunc();
     getSavedDates();
+    renderCarousel();
 
   
     setInterval(() => {
