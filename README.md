@@ -32,7 +32,7 @@ The project utilizes the following technologies:
 
 This project was a collaborative effort involving the following contributors:
 
-1. [Rainer](https://github.com/rarg08 )
+1. [Rainier](https://github.com/rarg08 )
 2. [Iñigo](https://github.com/iderobina1/)
 3. [Eli](https://github.com/ElisaDefa)
 4. [Rod](https://github.com/Rod-Freedom)
@@ -68,6 +68,7 @@ The fonts used in the project are provided by Google Fonts: [Link](https://fonts
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT). See the LICENSE file for more details.
 
 ## Deployed
+[GitHub Pages](https://didierthomasm.github.io/Project-One/)
 
 ![Deployed Image 1](./assets/img/ss1.png)
 ![Deployed Image 2](./assets/img/ss2.png)
