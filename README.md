@@ -2,6 +2,17 @@
 
 ![SpaceChild Banner](./assets/img/StarChildBg@2x.png)
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Technologies Used](#technologies-used)
+- [Collaboration](#collaboration)
+- [Project Structure](#project-structure)
+- [How to Use](#how-to-use)
+- [Credits](#credits)
+- [License](#license)
+- [Deployed](#deployed)
+
 ## Overview
 
 This repository contains the code for the SpaceChild project, a web application that allows users to explore space-related content. It includes features to view pictures of the day, find nearby objects in space, and save meaningful dates for future reference.
@@ -21,7 +32,7 @@ The project utilizes the following technologies:
 
 This project was a collaborative effort involving the following contributors:
 
-1. [Rainer](https://github.com/rarg08 )
+1. [Rainier](https://github.com/rarg08 )
 2. [Iñigo](https://github.com/iderobina1/)
 3. [Eli](https://github.com/ElisaDefa)
 4. [Rod](https://github.com/Rod-Freedom)
@@ -55,3 +66,12 @@ The fonts used in the project are provided by Google Fonts: [Link](https://fonts
 ## License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT). See the LICENSE file for more details.
+
+## Deployed
+[GitHub Pages](https://didierthomasm.github.io/Project-One/)
+
+![Deployed Image 1](./assets/img/ss1.png)
+![Deployed Image 2](./assets/img/ss2.png)
+![Deployed Image 3](./assets/img/ss3.png)
+![Deployed Image 4](./assets/img/ss4.png)
+![Deployed Image 5](./assets/img/ss5.png)
