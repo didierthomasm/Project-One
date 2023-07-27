@@ -2,16 +2,16 @@ const datepicker = document.getElementById("datepicker");
 const newDateBox = document.querySelector("#newDateBox");
 const todaysPic = document.querySelector('#todaysPic');
 const errorMsg = document.querySelector("#errorMsg");
-const carousel = document.querySelector("#carousel");
 const myDatesBtn = document.querySelector("#myDatesBtn");
 const emptyMsg = document.querySelector("#emptyMsg");
+const carousel = document.querySelector("#carousel");
 const bookmarkZone = $("#bookmarkZone");
 const mainContent = $("#mainContent");
-const yourDayBox = $("#yourDayBox");
+// As a global variable.
+const key = 'DhZgqHPR8sd2nvKgECz74jcTRRxDcioHOCvgtd7z';
 
-const key = 'DhZgqHPR8sd2nvKgECz74jcTRRxDcioHOCvgtd7z'; // As a global variable.
-
-let myDatesArray = []; // The bookmarks array as a global variable.
+// The bookmarks array as a global variable.
+let myDatesArray = [];
 
 // To be called each time we need to update the local storage.
 const storeData = () => localStorage.setItem("myDates", JSON.stringify(myDatesArray));
@@ -23,9 +23,12 @@ const getData = () => {
 // After being called by clicking My Dates button, it shows the My Dates carousel.
 const openMyDates = (e) => {
     e.stopPropagation();
-    myDatesBtn.removeEventListener('click', openMyDates); // My Saves Btn now disabled.
-    carousel.classList.add('carousel-shown'); // This class just changes height, from 0vh to 20vh.
-    document.addEventListener('click', closeMyDates); // A click event for the whole document.
+    // My Saves Btn now disabled.
+    myDatesBtn.removeEventListener('click', openMyDates);
+    // This class just changes height, from 0vh to 20vh.
+    carousel.classList.add('carousel-shown');
+    // A click event for the whole document.
+    document.addEventListener('click', closeMyDates);
 };
 
 // After being called by clicking anywhere outside the carousel, it closes the My Dates carousel.
@@ -44,19 +47,23 @@ const getSavedDates = () => {
         storeData();
     } else {
         getData();
-    }
+    };
 };
 
 // Function to add the initial event listeners as the page loads.
 const eventListenersFunc = () => {
-    datepicker.addEventListener("change", fetchDataFuncInput);  // For the type-date input.
-    todaysPic.addEventListener("click", fetchDataFuncToday);    // For the today's pic button.
-    myDatesBtn.addEventListener("click", openMyDates); // To open the bookmarks (My Dates).
+    // For the type-date input.
+    datepicker.addEventListener("change", fetchDataFuncInput);
+    // For the today's pic button.
+    todaysPic.addEventListener("click", fetchDataFuncToday);
+    // To open the bookmarks (My Dates).
+    myDatesBtn.addEventListener("click", openMyDates);
 };
 
 // To fetch data from the APIs and render a new box when the user selects a date in the input.
 const fetchDataFuncInput = (e) => {
-    e.stopPropagation(); // To prevent from closing My Dates carousel when open.
+    // To prevent from closing My Dates carousel when open.
+    e.stopPropagation();
     let selectedDate = datepicker.value;
 
     // Error message for if the user selects an invalid date.
@@ -82,22 +89,26 @@ const errorMsgHideShow = () => {
 
 // Shows the picture of the day.
 const fetchDataFuncToday = (e) => {
-    e.stopPropagation(); // To prevent from closing My Dates carousel when open.
+    // To prevent from closing My Dates carousel when open.
+    e.stopPropagation();
     let today = dayjs().format('YYYY-MM-DD') ;
 
-
-    $('#yourDayBox').remove(); // Removes any active DayBox present to open a new one.
+    // Removes any active DayBox present to open a new one.
+    $('#yourDayBox').remove();
     renderDayBox();
     fetchData(today);
 };
 
 // To fetch data from the APIs and render a new box when the user selects a bookmark (saved date).
 const fetchDataFuncBookmark = (e) => {
-    e.stopPropagation(); // To prevent from closing My Dates carousel when open.
+    // To prevent from closing My Dates carousel when open.
+    e.stopPropagation();
     let event = e.target;
-    let BMDate = event.dataset.date // Each bookmark has a date saved as a data-date attribute.
+    // Each bookmark has a date saved as a data-date attribute.
+    let BMDate = event.dataset.date;
 
-    $('#yourDayBox').remove(); // Removes any active DayBox present to open a new one.
+    // Removes any active DayBox present to open a new one.
+    $('#yourDayBox').remove();
     renderDayBox();
     fetchData(BMDate);
 };
@@ -117,29 +128,35 @@ const renderCarousel = () => {
     // To render bookmarks only if the local storage isn't empty.
     if (myDatesArray.length > 0) {
         for (i = 0; i < myDatesArray.length; i++) {
-            const bookmark = $(`
-            <div id="bookmark" class="flex flex-col items-center justify-between h-4/5 aspect-square mx-12" data-index="${i}">
-                <div id="bookmarkImg" class="w-4/6 h-4/6 aspect-square bg-cover rounded-full border glow-light" style="background-image: url(${myDatesArray[i].p});" data-date="${myDatesArray[i].d}"></div>
-                <p class="font-pixels text-xs text-gray-200 h-1/6 flex items-center">${myDatesArray[i].d}</p>
-                <button id="btnRemove" class="btn bg-gray-200/30 hover:bg-red-500/30 px-5 mx-5 text-xs font-brand font-black text-gray-200 rounded-md" data-index="${i}">REMOVE</button>
-            </div>
-            `);
+            if (myDatesArray[i].p.search("youtube") < 0) {
+                const bookmark = $(`
+                <div id="bookmark" class="flex flex-col items-center justify-between h-4/5 aspect-square mx-12" data-index="${i}">
+                    <div id="bookmarkImg" class="w-4/6 h-4/6 aspect-square bg-cover rounded-full border glow-light" style="background-image: url(${myDatesArray[i].p});" data-date="${myDatesArray[i].d}"></div>
+                    <p class="font-pixels text-xs text-gray-200 h-1/6 flex items-center">${myDatesArray[i].d}</p>
+                    <button id="btnRemove" class="btn bg-gray-200/30 hover:bg-red-500/30 px-5 mx-5 text-xs font-brand font-black text-gray-200 rounded-md" data-index="${i}">REMOVE</button>
+                </div>
+                `);
+                bookmarkZone.append(bookmark);
+                bookmark.on('click', '#btnRemove', deleteBookmark); // To activate the REMOVE button.
+                bookmark.on('click', '#bookmarkImg', fetchDataFuncBookmark); // To render the saved bookmark.
+            } else {
+                const bookmark = $(`
+                <div id="bookmark" class="flex flex-col items-center justify-between h-4/5 aspect-square mx-12" data-index="${i}">
+                    <div id="bookmarkImg" class="w-4/6 h-4/6 aspect-square bg-cover rounded-full border glow-light" style="background-image: url(https://i.blogs.es/9b19ad/youtube/1366_2000.webp); background-position: center;" data-date="${myDatesArray[i].d}"></div>
+                    <p class="font-pixels text-xs text-gray-200 h-1/6 flex items-center">${myDatesArray[i].d}</p>
+                    <button id="btnRemove" class="btn bg-gray-200/30 hover:bg-red-500/30 px-5 mx-5 text-xs font-brand font-black text-gray-200 rounded-md" data-index="${i}">REMOVE</button>
+                </div>
+                `);
+                bookmarkZone.append(bookmark);
+                bookmark.on('click', '#btnRemove', deleteBookmark); // To activate the REMOVE button.
+                bookmark.on('click', '#bookmarkImg', fetchDataFuncBookmark); // To render the saved bookmark.
+            }
 
-            bookmarkZone.append(bookmark);
-            bookmark.on('click', '#btnRemove', deleteBookmark); // To activate the REMOVE button.
-            bookmark.on('click', '#bookmarkImg', fetchDataFuncBookmark); // To render the saved bookmark.
-            bookmarkZone.on("mousemove", "#bookmark", mouseMoveCarousel); // To move across the carousel by dragging bookmarks with the mouse.
         }
 
     } else {
         emptyMsg.classList.remove('hidden'); // To display a message if the local storage is empty.
-    }
-
-};
-
-const mouseMoveCarousel = (e) => {
-    let event = e.target
-    event.scrollLeft.pageX;
+    };
 };
 
 // Added a parameter to the function to have various input sources.
@@ -180,7 +197,7 @@ const fetchData = (inputDate) => {
       })
       .catch(function (error) {
           console.log("Error fetching NEOW data:", error);
-      })
+      });
 };
 
 // To create a new section to contain the data box.
@@ -193,69 +210,83 @@ const renderDayBox = () => {
 
 // Hiddes the date selector and renders a new box with all its elements from scratch, just for the APOD data.
 const renderPicBox = (pic, picTitle, picExplan) => {
-
     dateBoxHide();
-
     // Creates the DOM element with all its children, classes, and ids based on the input data.
-    const picBox = $(`
-        <div id="picBox" class="flex flex-col items-center justify-between bg-black/50 backdrop-blur-md p-8 pb-16 max-w-4xl w-fit border border-gray-200 rounded-t-2xl">
-            <h1 class="text-3xl font-bold font-brand text-gray-200 mb-8 text-center">YOUR MEANINGFUL DAY PIC</h1>
-            <div class="relative flex justify-center items-center">
-                <img id="picAstro" class="mb-6" src="${pic}" alt="${picTitle}">
-                <h1 id="saved" class="absolute bg-gray-400/30 rounded-lg py-10 px-20 text-3xl font-bold font-brand text-gray-200 opacity-0">SAVED</h1>
-            </div>
-            <p class="h-32 overflow-auto m-0 font-body text-gray-200 bg-black/50 p-5 rounded-lg">${picTitle} <br><br>
-                ${picExplan}
-            </p>
-        </div>
-    `);
+    if (pic.search("youtube") < 0) {
+        const picBox = $(`
+            <div id="picBox" class="flex flex-col items-center justify-between bg-black/50 backdrop-blur-md p-4 pb-8 md:p-8 md:pb-16 mx-3 max-w-4xl w-fit border border-gray-200 rounded-t-2xl">
+                <h1 class="text-xl md:text-3xl font-bold font-brand text-gray-200 mb-4 md:mb-8 text-center">YOUR MEANINGFUL DAY PIC</h1>
+                <div class="relative flex justify-center items-center">
+                    <img id="picAstro" class="mb-6" src="${pic}" alt="${picTitle}">
+                    <h1 id="saved" class="absolute bg-gray-400/30 rounded-lg py-10 px-20 text-3xl font-bold font-brand text-gray-200 opacity-0">SAVED</h1>
+                </div>
+                <p class="text-sm md:text-base h-32 overflow-auto m-0 font-body text-gray-200 bg-black/50 p-5 rounded-lg">${picTitle}<br><br>
+                    ${picExplan}
+                </p>
+            </div>`
+        );
+        // Apendded to the section recently created.
+        $('#yourDayBox').append(picBox);
+    } else {
+        const picBox = $(`
+            <div id="picBox" class="flex flex-col items-center justify-between bg-black/50 backdrop-blur-md p-4 pb-8 md:p-8 md:pb-16 mx-3 max-w-4xl w-fit border border-gray-200 rounded-t-2xl">
+                <h1 class="text-xl md:text-3xl font-bold font-brand text-gray-200 mb-4 md:mb-8 text-center">YOUR MEANINGFUL DAY VIDEO</h1>
+                <div class="relative flex justify-center items-center">
+                    <iframe width="560" height="315" id="picAstro" class="mb-6" src="${pic}" title="${picTitle}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <p class="text-sm md:text-base h-32 overflow-auto m-0 font-body text-gray-200 bg-black/50 p-5 rounded-lg">${picTitle}<br><br>
+                    ${picExplan}
+                </p>
+            </div>`
+        );
 
-    // Apendded to the section recently created.
-    $('#yourDayBox').append(picBox);
+        // Apendded to the section recently created.
+        $('#yourDayBox').append(picBox);
+    }
 };
 
 // Renders a new box positioned under the APOD box with all its elements from scratch, just for the NeoWs data.
 const renderNeoBox = (inputDate, neos, neoCount, imgURL) => {
-
-    let neoLiElements = ""; // To define the new DOM's elements as a string for further appending. (ul of Neos)
+    // To define the new DOM's elements as a string for further appending. (ul of Neos)
+    let neoLiElements = "";
 
     // Loop to debug and create a strig able to be concatenated with the URL of NASA's Eyes on Asteroids Website.
     // For example – The format given is: 154278 (2002 TB9), and we need: 154278_2002_TB9.
     for (i = 0; i < neoCount; i++) {
-        let neoName = neos[i].name // To select each asteroid name by object's property, one by one.
+        // To select each asteroid name by object's property, one by one.
+        let neoName = neos[i].name;
         let neoNameClean = neoName.replace('(', '').replace(')', '').replace('/', '_').replace('-', '_').replace(' ', '_').replace(' ', '_').replace('__', '_');
 
         // The format has to be all lowercase.
         let neoCode = neoNameClean.toLowerCase();
 
         // New string concatenated to the new li elements.
-        neoLiElements += `<li>${i + 1}: ${neoName} <a class="underline" href="https://eyes.nasa.gov/apps/asteroids/#/asteroids/${neoCode}" target="_blank">Live Location</a></li>`;
+        neoLiElements += `<li class="text-sm md:text-base">${i + 1}: ${neoName} <a class="underline" href="https://eyes.nasa.gov/apps/asteroids/#/asteroids/${neoCode}" target="_blank">Live Location</a></li>`;
     }
 
     // Create the complete box of Neos under the picture box.
     const neoBox = $(`
-        <div id="neoBox" class="flex flex-col items-center justify-between bg-black/50 backdrop-blur-md p-8 pt-16 max-w-4xl w-fit border border-t-0 border-gray-200 rounded-b-2xl mb-10">
-            <h1 class="text-3xl font-bold font-brand text-gray-200 mb-8 text-center">THE NEAR EARTH OBJECTS OF YOUR MEANINGFUL DAY</h1>
+        <div id="neoBox" class="flex flex-col items-center justify-between bg-black/50 backdrop-blur-md p-4 pt-8 md:p-8 md:pt-16 mx-3 max-w-4xl w-fit border border-t-0 border-gray-200 rounded-b-2xl mb-10">
+            <h1 class="text-xl md:text-3xl font-bold font-brand text-gray-200 mb-4 md:mb-8 text-center">THE NEAR EARTH OBJECTS OF YOUR MEANINGFUL DAY</h1>
             <div id="neosDiv" class="h-40 overflow-auto m-0 font-body text-gray-200 bg-black/50 p-5 rounded-lg">
-                <p>That day, there were ${neoCount} objects found nearby! <br>
+                <p class="text-sm md:text-base">That day, there were ${neoCount} objects found nearby! <br>
                 Click on the links to see your nearby objects and their live locations across the solar system!</p>
                 <br>
                 <ul id="neosList">
                     ${neoLiElements}
                 </ul>
             </div>
-
-
             <div class="flex justify-between mt-8">
-                <button id="btnSave" class="btn bg-gray-200/30 hover:bg-slate-500/30 py-1 px-5 mx-5 text-xl font-brand font-black text-gray-200 rounded-lg">SAVE</button>
-                <button id="btnClose" class="btn bg-gray-200/30 hover:bg-slate-500/30 py-1 px-5 mx-5 text-xl font-brand font-black text-gray-200 rounded-lg">CLOSE</button>
+                <button id="btnSave" class="btn bg-gray-200/30 hover:bg-slate-500/30 py-1 px-5 mx-5 text-lg md:text-xl font-brand font-black text-gray-200 rounded-lg">SAVE</button>
+                <button id="btnClose" class="btn bg-gray-200/30 hover:bg-slate-500/30 py-1 px-5 mx-5 text-lg md:text-xl font-brand font-black text-gray-200 rounded-lg">CLOSE</button>
             </div>
-        </div>
-    `);
+        </div>`
+    );
 
     // Appended to the box.
     $('#yourDayBox').append(neoBox);
-    const savedMsg = $('#saved'); // Save message defined.
+    // Save message defined.
+    const savedMsg = $('#saved');
 
     // Function to save the data after clicking the save button.
     const saveDate = (e) => {
@@ -266,26 +297,24 @@ const renderNeoBox = (inputDate, neos, neoCount, imgURL) => {
             savedMsg.addClass('trans-6s');
             savedMsg.removeClass('opacity-100');
         };
-
         // This line is to find if the date is already saved.
         let dateFinder = myDatesArray.find(element => element.d === inputDate);
-
         if (dateFinder === undefined) {
-            myDatesArray.push( {d: inputDate, p: imgURL} ); // (d) for day, (p) for picture.
+            // (d) for day, (p) for picture.
+            myDatesArray.push( { d: inputDate, p: imgURL } );
             storeData();
-            bookmarkZone.children().remove()
-            renderCarousel(); // To update the carousel on the interface.
+            bookmarkZone.children().remove();
+            // To update the carousel on the interface.
+            renderCarousel();
         }
-
-        setTimeout(remSaveMsg, 1000); // Save message disappears after a second.
-
+        // Save message disappears after a second.
+        setTimeout(remSaveMsg, 1000);
         neoBox.off('click', '#btnSave', saveDate);
     };
 
     // Function to close everything after clicking the close button and returning to default view with the date picker.
     const closeBox = (e) => {
         e.stopPropagation();
-
         $('#yourDayBox').remove();
         dateBoxShow();
     };
@@ -317,7 +346,6 @@ const setMaxDate = () => {
 const todaysDate = () => {
     const today = $(".todaysDate");
     let todaysDay = dayjs().format('D MMM');
-
     today.html(todaysDay);
 };
 
@@ -328,14 +356,8 @@ $(document).ready(function() {
     eventListenersFunc();
     getSavedDates();
     renderCarousel();
-
-
+    // To update todays date every hour.
     setInterval(() => {
         todaysDate();
-
     }, 3600000);
 });
-
-
-
-

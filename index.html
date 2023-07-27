@@ -5,113 +5,82 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="color-scheme" content="dark">
         <script src="https://kit.fontawesome.com/6e39ad8a93.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.tailwindcss.com" rel="stylesheet"></script>
+        <script defer src="./assets/js/script.js"></script>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Press+Start+2P&family=Victor+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
-        <script src="https://cdn.tailwindcss.com" rel="stylesheet"></script>
         <link rel="stylesheet" href="./assets/css/styles.css">
         <title>SpaceChild</title>
-        <script defer src="./assets/js/script.js"></script>
-    
     </head>
     
     <body class="h-screen flex flex-col justify-between">
         <header class="flex flex-col mb-5">
-            <section class="mainHeader flex flex-wrap justify-between px-10 py-3 bg-gray-900/50 items-center backdrop-blur-md">
-                <h1 class="font-brand text-4xl font-thin text-gray-200 w-1/3"><i class="fa-regular fa-user-astronaut text-4xl pr-3"></i>Space<span class="font-black">Child</span></h1>
-                
-                <div class="flex flex-col items-center w-1/3">
-                    <div id="myDatesBtn" class="flex flex-col items-center text-gray-200 hover:text-gray-400">
-                        <i class="fa-regular fa-telescope text-4xl"></i>
-                        <p class="font-brand text-center">MY<br>DATES</p>
+            <section class="mainHeader flex flex-wrap justify-between px-5 md:px-10 py-3 bg-gray-900/50 items-center backdrop-blur-md">
+                <h1 class="flex flex-nowrap font-brand text-xl md:text-4xl font-thin text-gray-200 w-1/2 md:w-1/3"><i class="fa-regular fa-user-astronaut text-xl md:text-4xl pr-3"></i>Space<span class="font-black">Child</span>
+                </h1>
+                <div class="flex flex-col items-end md:items-center w-1/2 md:w-1/3">
+                    <div id="myDatesBtn" class="flex md:flex-col items-center text-gray-200 hover:text-gray-400">
+                        <i class="fa-regular fa-telescope text-3xl mr-4 md:mr-0 md:text-4xl"></i>
+                        <p class="font-brand text-sm md:text-lg text-center">MY<br>DATES</p>
                     </div>
                 </div>
-                
-                <div class="w-1/3 flex justify-end">
+                <div class="w-full md:w-1/3 flex justify-center md:justify-end">
                     <a id="todaysPic" class="font-brand text-gray-200 hover:text-gray-400 flex flex-col items-center">
-                        <P class="text-2xl font-bold todaysDate"></p>
-                        <p class="text-base">CLICK FOR TODAY'S PIC</p>
+                        <P class="mt-4 md:m-0 text-lg md:text-2xl font-bold todaysDate"></p>
+                        <p class="text-xs md:text-base">CLICK FOR TODAY'S PIC</p>
                     </a>
                 </div>
-            </section>
-                
+            </section>   
             <div class="carousel grid justify-center w-screen overflow-y-hidden bg-black/70 backdrop-blur-md" id="carousel">
                 <div id="bookmarkZone" class="flex flex-nowrap w-fit items-center justify-center overflow-x-auto">
                     <h1 id="emptyMsg" class="font-brand font-bold text-3xl hidden">EMPTY</h1>
                 </div>
             </div>
         </header>
-
-        <section id="errorMsg" class="flex justify-center items-center absolute w-screen h-screen hidden" data-state="hidden">
-            <div class="flex justify-center bg-slate-200/50 backdrop-blur-md border-2 border-black py-10 px-16 rounded-xl">
-                <h1 class="font-brand text-center font-bold text-gray-900 text-2xl ">SORRY, YOUR DATE MUST BE BETWEEN <br> JUN 16, 1995 AND TODAY.</h1>
+        
+        <!-- <div id="picBox" class="flex flex-col items-center justify-between bg-black/50 backdrop-blur-md p-4 pb-8 md:p-8 md:pb-16 mx-3 max-w-4xl w-fit border border-gray-200 rounded-t-2xl">
+            <h1 class="text-xl md:text-3xl font-bold font-brand text-gray-200 mb-4 md:mb-8 text-center">YOUR MEANINGFUL DAY PIC</h1>
+            <div class="relative flex justify-center items-center">
+                <iframe id="picAstro" class="mb-6" src="https://www.youtube.com/embed/X4UF9Akman0?rel=0" title="${picTitle}"></iframe>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/X4UF9Akman0?rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe width="450" height="200"
+    src="https://www.youtube.com/embed/xZs6nCUQuuM">
+</iframe>
+                <h1 id="saved" class="absolute bg-gray-400/30 rounded-lg py-10 px-20 text-3xl font-bold font-brand text-gray-200 opacity-0">SAVED</h1>
             </div>
-        </section>
+            <p class="text-sm md:text-base h-32 overflow-auto m-0 font-body text-gray-200 bg-black/50 p-5 rounded-lg">${picTitle}<br><br>
+                ${picExplan}
+            </p>
+        </div> -->
         
         <main id="mainContent" class="flex flex-col items-center justify-center">
             <section id="newDateBox" class="flex flex-col justify-center items-center rounded-lg py-5 px-10 bg-black/70 w-fit trans-3s drop-shadow-lg backdrop-blur-md" data-state="visible">
-                <h4 class="text-xl font-bold font-brand text-gray-200 mb-4">SELECT A MEANINGFULL DATE</h4>
-                <p class="text-center text-sm font-brand font-thin text-gray-200 mb-8">CLICK ON THE FLUX CAPACITOR<br>TO OPEN THE CALENDAR</p>
-                <div class="calendar flex flex-nowrap justify-center items-center text-gray-200 hover:text-gray-400 mb-3" id="calendar">
-                    <input class="bg-black/0 font-pixels" type="date" min="1995-06-24" id="datepicker" placeholder="Select a date">
-                    <i class="fa-regular fa-flux-capacitor text-4xl fluxCap"></i>
+                <h4 class="md:text-xl text-base font-bold font-brand text-gray-200 mb-4">
+                    SELECT A MEANINGFULL DATE
+                </h4>
+                <p class="text-center text-xs md:text-sm font-brand font-thin text-gray-200 mb-5 md:mb-8">
+                    CLICK ON THE FLUX CAPACITOR<br>TO OPEN THE CALENDAR
+                </p>
+                <div class="calendar flex flex-nowrap justify-center items-center text-gray-200 hover:text-gray-400 mb-1 md:mb-3" id="calendar">
+                    <label for=“datepicker”>
+                    </label>
+                    <input class="bg-black/0 font-pixels text-sm md:text-base" type="date" min="1995-06-24" id="datepicker" placeholder="Select a date">
+                    <i class="fa-regular fa-flux-capacitor text-3xl md:text-4xl fluxCap">
+                    </i>
                 </div>
-            </section>
-
-            
-            
+            </section>      
         </main>
-        
-        <footer></footer>
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js" integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous"></script>
+        <section id="errorMsg" class="flex justify-center items-center absolute w-screen h-screen hidden" data-state="hidden">
+            <div class="flex justify-center bg-slate-200/50 backdrop-blur-md border-2 border-black py-3 px-3 md:py-10 md:px-16 rounded-xl">
+                <h1 class="font-brand text-center font-bold text-gray-900 text-base md:text-2xl ">SORRY, YOUR DATE MUST BE BETWEEN <br> JUN 16, 1995 AND TODAY.</h1>
+            </div>
+        </section>
+        <footer>
+        </footer>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js">
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js" integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous">
+        </script>
     </body>
 </html>
-    
-
-
-
-
-
-
-<!-- ________________________________________________________________________________________________________________________________ -->
-    
-<!--<div id="bookmark" class="flex flex-col items-center justify-between h-4/5 aspect-square mx-8" data-index="0">
-        <div class="w-4/6 h-4/6 aspect-square bg-cover rounded-full border glow-light" style="background-image: url(https://apod.nasa.gov/apod/image/1904/LeoTrioBauer1024.jpg);"></div>
-        <p class="font-pixels text-xs text-gray-200 h-1/6 flex items-center">2019-04-18</p>
-        <button id="btnRemove" class="btn bg-gray-200/30 hover:bg-red-500/30 px-5 mx-5 text-xs font-brand font-black text-gray-200 rounded-md">REMOVE</button>
-    </div> 
-    
-    
-    <section id="yourDayBox" class="flex-col items-center justify-center">
-        <div id="picBox" class="flex flex-col items-center justify-between bg-black/50 p-8 pb-16 max-w-4xl w-fit border border-gray-200 rounded-t-2xl">
-            <h1 class="text-3xl font-bold font-brand text-gray-200 mb-8 text-center">YOUR MEANINGFUL DAY PIC</h1>
-            <div class="relative flex justify-center items-center">
-                <img id="picAstro" class="mb-6" src="https://apod.nasa.gov/apod/image/2307/SpottedSun_Sanli_960.jpg" alt="sun sunspots timespan 6-months">
-                <h1 id="saved" class="absolute bg-black/30 rounded-lg py-10 px-20 text-3xl font-bold font-brand text-gray-200">SAVED</h1>
-            </div>
-            <p class="h-32 overflow-auto m-0 font-body text-gray-200 bg-black/50 p-5 rounded-lg">Sunspots on an Active Sun <br><br>
-                Why is our Sun so active now? No one is sure. An increase in surface activity was expected because our Sun is approaching solar maximum in 2025. However, last month our Sun sprouted more sunspots than in any month during the entire previous 11-year solar cycle -- and even dating back to 2002. The featured picture is a composite of images taken every day from January to June by NASA's Solar Dynamic Observatory. Showing a high abundance of sunspots, large individual spots can be tracked across the Sun's disk, left to right, over about two weeks. As a solar cycle continues, sunspots typically appear closer to the equator. Sunspots are just one way that our Sun displays surface activity -- another is flares and coronal mass ejections (CMEs) that expel particles out into the Solar System. Since these particles can affect astronauts and electronics, tracking surface disturbances is of more than aesthetic value. Conversely, solar activity can have very high aesthetic value -- in the Earth's atmosphere when they trigger aurora.
-            </p>
-        </div>
-
-        <div id="neoBox" class="flex flex-col items-center justify-between bg-black/50 p-8 pt-16 max-w-4xl w-fit border border-t-0 border-gray-200 rounded-b-2xl mb-10">
-            <h1 class="text-3xl font-bold font-brand text-gray-200 mb-8 text-center">THE NEAR EARTH OBJECTS OF YOUR MEANINGFUL DAY</h1>
-            <div id="neosDiv" class="h-40 overflow-auto m-0 font-body text-gray-200 bg-black/50 p-5 rounded-lg">
-                <p>That day, there were 5 objects found! <br>
-                Click on the links to see your nearby objects and their live locations across the solar system!</p>
-                <br>
-                <ul id="neosList">
-                    <li>Object 1: <a class="underline" href="">Live Location</a></li>
-                    <li>Object 2: <a class="underline" href="">Live Location</a></li>
-                    <li>Object 3: <a class="underline" href="">Live Location</a></li>
-                </ul>
-            </div>
-        
-        
-            <div class="flex justify-between mt-8">
-                <button id="btnSave" class="btn bg-gray-200/30 hover:bg-slate-500/30 py-1 px-5 mx-5 text-xl font-brand font-black text-gray-200 rounded-lg">SAVE</button>
-                <button id="btnClose" class="btn bg-gray-200/30 hover:bg-slate-500/30 py-1 px-5 mx-5 text-xl font-brand font-black text-gray-200 rounded-lg">CLOSE</button>
-            </div>
-        </div>
-    </section> -->
