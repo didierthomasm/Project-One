@@ -2,6 +2,17 @@
 
 ![SpaceChild Banner](./assets/img/StarChildBg@2x.png)
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Technologies Used](#technologies-used)
+- [Collaboration](#collaboration)
+- [Project Structure](#project-structure)
+- [How to Use](#how-to-use)
+- [Credits](#credits)
+- [License](#license)
+- [Deployed](#deployed)
+
 ## Overview
 
 This repository contains the code for the SpaceChild project, a web application that allows users to explore space-related content. It includes features to view pictures of the day, find nearby objects in space, and save meaningful dates for future reference.
@@ -55,3 +66,11 @@ The fonts used in the project are provided by Google Fonts: [Link](https://fonts
 ## License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT). See the LICENSE file for more details.
+
+## Deployed
+
+![Deployed Image 1](./assets/img/ss1.png)
+![Deployed Image 2](./assets/img/ss2.png)
+![Deployed Image 3](./assets/img/ss3.png)
+![Deployed Image 4](./assets/img/ss4.png)
+![Deployed Image 5](./assets/img/ss5.png)
