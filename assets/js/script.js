@@ -80,8 +80,7 @@ const fetchDataFuncInputMobile = (e) => {
         renderDayBox();
         fetchData(selectedDate);
     } else {
-        errorMsgHideShow();
-        setTimeout(errorMsgHideShow, 5000);
+        errorMsgShow();
     }
 };
 
