@@ -100,12 +100,14 @@ const fetchDataFuncInput = (e) => {
     };
 };
 
+// Shows error message when out of bounds.
 const errorMsgShow = () => {
+    errorMsg.dataset.state = "shown";
     errorMsg.classList.remove("hidden");
     errorMsg.classList.add("flex");
 };
 
-// If the error message is shown, hide it; if hidden, show it.
+// Hiddes error message when out of bounds.
 const errorMsgHide = () => {
     errorMsg.dataset.state = "hidden";
     errorMsg.classList.add("hidden");
