@@ -1,14 +1,19 @@
 const datepicker = document.getElementById("datepicker");
+const datepickerMobile = document.getElementById("datepickerMobile");
+const fluxCap = document.getElementById("flux-capacitor");
 const newDateBox = document.querySelector("#newDateBox");
 const todaysPic = document.querySelector('#todaysPic');
 const errorMsg = document.querySelector("#errorMsg");
 const myDatesBtn = document.querySelector("#myDatesBtn");
 const emptyMsg = document.querySelector("#emptyMsg");
 const carousel = document.querySelector("#carousel");
+constbtnOk = document.querySelector("#btnOk")
 const bookmarkZone = $("#bookmarkZone");
 const mainContent = $("#mainContent");
 // As a global variable.
 const key = 'DhZgqHPR8sd2nvKgECz74jcTRRxDcioHOCvgtd7z';
+
+datepickerMobile.defaultValue = '1999-12-31';
 
 // The bookmarks array as a global variable.
 let myDatesArray = [];
@@ -58,13 +63,17 @@ const eventListenersFunc = () => {
     todaysPic.addEventListener("click", fetchDataFuncToday);
     // To open the bookmarks (My Dates).
     myDatesBtn.addEventListener("click", openMyDates);
+    // For the type-date input on mobile.
+    fluxCap.addEventListener("click", fetchDataFuncInputMobile);
+    // To hide error message.
+    btnOk.addEventListener("click", errorMsgHide);
 };
 
-// To fetch data from the APIs and render a new box when the user selects a date in the input.
-const fetchDataFuncInput = (e) => {
+// To fetch data from the APIs and render a new box when the user selects a date on the mobile input.
+const fetchDataFuncInputMobile = (e) => {
     // To prevent from closing My Dates carousel when open.
     e.stopPropagation();
-    let selectedDate = datepicker.value;
+    let selectedDate = datepickerMobile.value;
 
     // Error message for if the user selects an invalid date.
     if (selectedDate >= '1995-06-24' && selectedDate <= dayjs().format('YYYY-MM-DD')) {
@@ -76,15 +85,31 @@ const fetchDataFuncInput = (e) => {
     }
 };
 
-// If the error message is shown, hide it; if hidden, show it.
-const errorMsgHideShow = () => {
-    if (errorMsg.dataset.state === "hidden") {
-        errorMsg.dataset.state = "shown";
-        errorMsg.classList.remove("hidden");
+// To fetch data from the APIs and render a new box when the user selects a date on the input.
+const fetchDataFuncInput = (e) => {
+    // To prevent from closing My Dates carousel when open.
+    e.stopPropagation();
+    let selectedDate = datepicker.value;
+
+    // Error message for if the user selects an invalid date.
+    if (selectedDate >= '1995-06-24' && selectedDate <= dayjs().format('YYYY-MM-DD')) {
+        renderDayBox();
+        fetchData(selectedDate);
     } else {
-        errorMsg.dataset.state = "hidden";
-        errorMsg.classList.add("hidden");
-    }
+        errorMsgShow();
+    };
+};
+
+const errorMsgShow = () => {
+    errorMsg.classList.remove("hidden");
+    errorMsg.classList.add("flex");
+};
+
+// If the error message is shown, hide it; if hidden, show it.
+const errorMsgHide = () => {
+    errorMsg.dataset.state = "hidden";
+    errorMsg.classList.add("hidden");
+    errorMsg.classList.remove("flex");
 };
 
 // Shows the picture of the day.
@@ -115,6 +140,7 @@ const fetchDataFuncBookmark = (e) => {
 
 // Func to run the remove button from the bookmarks.
 const deleteBookmark = (e) => {
+    e.stopPropagation();
     let event = e.target;
 
     event.parentElement.remove(); // Removes the whole bookmark element.
@@ -150,12 +176,14 @@ const renderCarousel = () => {
                 bookmarkZone.append(bookmark);
                 bookmark.on('click', '#btnRemove', deleteBookmark); // To activate the REMOVE button.
                 bookmark.on('click', '#bookmarkImg', fetchDataFuncBookmark); // To render the saved bookmark.
-            }
-
-        }
-
+            };
+        };
     } else {
-        emptyMsg.classList.remove('hidden'); // To display a message if the local storage is empty.
+        // To display a message if the local storage is empty.
+        emptyMsg.classList.remove('hidden');
+        // To align the message.
+        carousel.classList.remove('justify-start');
+        carousel.classList.add('justify-center');
     };
 };
 
