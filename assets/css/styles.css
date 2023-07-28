@@ -40,6 +40,10 @@ body {
     cursor: pointer;
 }
 
+#datepickerMobile::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
 input[type="date"] {
     position: relative;
     width: 15rem;
@@ -53,27 +57,29 @@ input[type="date"] {
     z-index: 1;
 }
 
-.calendar:hover {
-    transform: var(--hoverScale);
-    transition: var(--transTime3s);
-    cursor: pointer;
-}
+@media (min-width: 768px) {
+    .calendar:hover {
+        transform: var(--hoverScale);
+        transition: var(--transTime3s);
+        cursor: pointer;
+    }
+    
+    #myDatesBtn:hover {
+        transform: var(--hoverScale);
+        transition: var(--transTime3s);
+        cursor: pointer;
+    }
 
-#myDatesBtn:hover {
-    transform: var(--hoverScale);
-    transition: var(--transTime3s);
-    cursor: pointer;
-}
+    #todaysPic:hover {
+        transform: var(--hoverScale);
+        transition: var(--transTime3s);
+        cursor: pointer;
+    }
 
-#todaysPic:hover {
-    transform: var(--hoverScale);
-    transition: var(--transTime3s);
-    cursor: pointer;
-}
-
-.btn:hover {
-    transform: var(--hoverScale);
-    transition: var(--transTime3s);
+    .btn:hover {
+        transform: var(--hoverScale);
+        transition: var(--transTime3s);
+    }
 }
 
 .trans-3s {

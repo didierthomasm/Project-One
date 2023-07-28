@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +14,7 @@
         <title>SpaceChild</title>
     </head>
     
-    <body class="h-screen flex flex-col justify-between">
+    <body class="h-full md:h-screen flex flex-col justify-between">
         <header class="flex flex-col mb-5">
             <section class="mainHeader flex flex-wrap justify-between px-5 md:px-10 py-3 bg-gray-900/50 items-center backdrop-blur-md">
                 <h1 class="flex flex-nowrap font-brand text-xl md:text-4xl font-thin text-gray-200 w-1/2 md:w-1/3"><i class="fa-regular fa-user-astronaut text-xl md:text-4xl pr-3"></i>Space<span class="font-black">Child</span>
@@ -32,39 +32,57 @@
                     </a>
                 </div>
             </section>   
-            <div class="carousel grid justify-center w-screen overflow-y-hidden bg-black/70 backdrop-blur-md" id="carousel">
+            <div class="carousel grid justify-start md:justify-center w-screen overflow-y-hidden bg-black/70 backdrop-blur-md" id="carousel">
                 <div id="bookmarkZone" class="flex flex-nowrap w-fit items-center justify-center overflow-x-auto">
-                    <h1 id="emptyMsg" class="font-brand font-bold text-3xl hidden">EMPTY</h1>
+                    <h1 id="emptyMsg" class="font-brand font-bold text-3xl hidden w-full text-center">EMPTY</h1>
                 </div>
             </div>
         </header>
         <main id="mainContent" class="flex flex-col items-center justify-center">
             <section id="newDateBox" class="flex flex-col justify-center items-center rounded-lg py-5 px-10 bg-black/70 w-fit trans-3s drop-shadow-lg backdrop-blur-md" data-state="visible">
-                <h4 class="md:text-xl text-base font-bold font-brand text-gray-200 mb-4">
+                <h4 class="md:text-xl text-center text-base font-bold font-brand text-gray-200 mb-4">
                     SELECT A MEANINGFULL DATE
                 </h4>
-                <p class="text-center text-xs md:text-sm font-brand font-thin text-gray-200 mb-5 md:mb-8">
-                    CLICK ON THE FLUX CAPACITOR<br>TO OPEN THE CALENDAR
+                <p class="text-center text-xs md:text-sm font-brand font-thin text-gray-200 m-0">
+                    CLICK ON THE FLUX CAPACITOR
                 </p>
-                <div class="calendar flex flex-nowrap justify-center items-center text-gray-200 hover:text-gray-400 mb-1 md:mb-3" id="calendar">
+                <p class="hidden md:flex text-center text-xs md:text-sm font-brand font-thin text-gray-200 mb-5 md:mb-8">
+                    TO OPEN THE CALENDAR
+                </p>
+                <p class="flex md:hidden text-center text-xs md:text-sm font-brand font-thin text-gray-200 mb-5 md:mb-8">
+                    TO GO TO YOUR DATE
+                </p>
+                <div class="calendar hidden md:flex flex-nowrap justify-center items-center text-gray-200 md:hover:text-gray-400 mb-5 md:mb-3" id="calendar">
                     <label for=“datepicker”>
                     </label>
                     <input class="bg-black/0 font-pixels text-sm md:text-base" type="date" min="1995-06-24" id="datepicker" placeholder="Select a date">
                     <i class="fa-regular fa-flux-capacitor text-3xl md:text-4xl fluxCap">
                     </i>
                 </div>
-            </section>      
+                <div class="calendar flex md:hidden flex-nowrap justify-center items-center text-gray-200 md:hover:text-gray-400 mb-5 md:mb-3" id="calendar">
+                    <label for=“datepickerMobile”>
+                    </label>
+                    <input class="bg-black/0 md:bg-black/0 font-pixels text-center text-lg" type="date" min="1995-06-24" id="datepickerMobile" placeholder="Select a date">
+                </div>
+                <i class="md:hidden md:mt-10 fa-regular fa-flux-capacitor text-5xl" id="flux-capacitor"></i>
+            </section>
         </main>
-        <section id="errorMsg" class="flex justify-center items-center absolute w-screen h-screen hidden" data-state="hidden">
-            <div class="flex justify-center bg-slate-200/50 backdrop-blur-md border-2 border-black py-3 px-3 md:py-10 md:px-16 rounded-xl">
+        <section id="errorMsg" class="justify-center items-center absolute w-screen h-screen hidden" data-state="hidden">
+            <div class="flex flex-col items-center justify-center bg-slate-200/50 backdrop-blur-md border-2 border-black py-3 px-3 md:py-10 md:px-16 rounded-xl">
                 <h1 class="font-brand text-center font-bold text-gray-900 text-base md:text-2xl ">SORRY, YOUR DATE MUST BE BETWEEN <br> JUN 16, 1995 AND TODAY.</h1>
+                <button id="btnOk" class="btn bg-black/30 hover:bg-black/50 py-1 px-10 mt-5 text-lg md:text-xl font-brand font-black text-gray-200 rounded-lg">OK</button>
             </div>
         </section>
         <footer>
+            <div class="flex justify-center py-1 bg-black items-center">
+                <a href="https://github.com/didierthomasm/Project-One">
+                    <h1 class="flex flex-nowrap font-brand text-sm md:text-lg font-thin text-gray-200"><i class="fa-regular fa-user-astronaut text-sm md:text-lg pr-3"></i>Space<span class="font-black">Child</span>
+                    &nbsp;- GitHub
+                    </h1>
+                </a>
+            </div>
         </footer>
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js">
-        </script>
-        <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js" integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous">
-        </script>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js" integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous"></script>
     </body>
 </html>
